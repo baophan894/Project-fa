@@ -6,12 +6,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import swp.group2.swpbe.AuthService;
 import swp.group2.swpbe.constant.ResourceStatus;
 import swp.group2.swpbe.constant.ReviewState;
 import swp.group2.swpbe.flashcard.dto.FlashcardDTO;
+import swp.group2.swpbe.flashcard.dto.FlashcardQuestionDTO;
 import swp.group2.swpbe.flashcard.entities.Flashcard;
+
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,4 +75,41 @@ public class FlashcardController {
         flashcardService.updateFlashcardState(flashcard, ResourceStatus.active);
         return new ResponseEntity<>("Flashcard state updated to pending successfully", HttpStatus.OK);
     }
+
+    @PostMapping("/flashcard/upload-csv")
+    public ResponseEntity<?> createFlashcardFromCSV(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam("topicId") String topicId,
+            @RequestParam("description") String description,
+            @RequestHeader("Authorization") String token) {
+        try {
+            String userId = authService.loginUser(token);
+
+            // Đọc file CSV
+            CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
+            List<FlashcardQuestionDTO> questions = new ArrayList<>();
+            List<String[]> rows = csvReader.readAll();
+
+            // Chuyển đổi dữ liệu từ CSV sang FlashcardQuestionDTO
+            for (String[] row : rows) {
+                if (row.length < 2)
+                    continue; // Bỏ qua dòng không hợp lệ
+                FlashcardQuestionDTO question = new FlashcardQuestionDTO(row[0], row[1]);
+                questions.add(question);
+            }
+
+            // Tạo FlashcardDTO từ dữ liệu đọc được
+            FlashcardDTO flashcardDTO = new FlashcardDTO(name, description, topicId, questions);
+
+            // Lưu flashcard vào cơ sở dữ liệu
+            Flashcard flashcard = flashcardService.create(flashcardDTO, userId);
+
+            return ResponseEntity.ok(flashcard);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to create flashcard from CSV: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

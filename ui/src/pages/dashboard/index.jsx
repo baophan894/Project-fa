@@ -37,8 +37,8 @@ const Dashboard = () => {
   };
   const renderTab = () => {
     switch (selectedKey) {
-      // case "1":
-      //   return <ListUser />;
+       case "1":
+         return <ListUser />;
       case "2":
         return <ReportTab />;
       case "3":
@@ -49,10 +49,10 @@ const Dashboard = () => {
         return <ListPendingFlashcard />;
       case "6":
         return <Topic />;
-      // case "7":
-      //   return <ExpertRequest />;
-      // case "8":
-      //   return <Withdraw/>
+       case "7":
+         return <ExpertRequest />;
+       case "8":
+         return <Withdraw/>
       default:
         return <div>Default Content</div>;
     }

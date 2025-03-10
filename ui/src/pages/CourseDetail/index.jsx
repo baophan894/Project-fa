@@ -125,7 +125,7 @@ const CourseDetail = () => {
                 </p>
               </div>
               <Button
-                // onClick={() => setIsShowConfirm(true)}
+                 onClick={() => setIsShowConfirm(true)}
                 className="w-full mt-2 "
                 type="primary"
               >

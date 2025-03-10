@@ -108,7 +108,10 @@ const CourseBought = () => {
 
         <div className="course-detail_content">
           <div className="course-detail_content__lessons">
-            {course?.lessons.map((lesson, i) => lessonItem(lesson, i))}
+            {course?.lessons
+              ?.slice() // Create a copy of the array to avoid mutating the original
+              .sort((a, b) => a.lessonOrder - b.lessonOrder) // Sort lessons by lessonOrder
+              .map((lesson, i) => lessonItem(lesson, i))}
           </div>
 
           <div className="course-detail_content_description">

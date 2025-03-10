@@ -26,7 +26,7 @@ public class ExpertRequestController {
             @RequestHeader("Authorization") String token,
             @RequestParam("cv") MultipartFile file) {
         String userId = authService.loginUser(token);
-        boolean isAllowRequest = userService.getUserLegit(userId) > 10;
+        boolean isAllowRequest = userService.getUserLegit(userId) > 1;
         if (isAllowRequest) {
             expertRequestService.saveRequest(userId, file);
         } else {

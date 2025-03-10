@@ -21,6 +21,7 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
     @Column(name = "user_id")
     private String userId;
     @Column(name = "created_at")
@@ -48,6 +49,7 @@ public class Flashcard {
         this.topicId = topicId;
         this.description = description;
         this.state = ResourceStatus.pending;
+ 
     }
 
     public Flashcard() {

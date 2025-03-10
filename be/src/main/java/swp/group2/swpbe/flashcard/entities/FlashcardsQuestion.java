@@ -2,6 +2,7 @@ package swp.group2.swpbe.flashcard.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,17 +17,27 @@ public class FlashcardsQuestion {
     private int id;
     private String question;
     private String answer;
+    // @Column(name = "questionUrl") 
+    // private String questionUrl;
+
+    // @Column(name = "answerUrl") 
+    // private String answerUrl;
+
     @ManyToOne
-    @JoinColumn(name="flashcards_id")
+    @JoinColumn(name = "flashcards_id")
     @JsonBackReference
+
     private Flashcard flashcards;
 
- 
-    public FlashcardsQuestion(Flashcard flashcards, String question, String answer) {
+    public FlashcardsQuestion(Flashcard flashcards, String question,String answer) {
         this.flashcards = flashcards;
         this.question = question;
+        
+       // this.questionUrl = questionUrl;
         this.answer = answer;
+        //this.answerUrl = answerUrl;
     }
+
     public FlashcardsQuestion() {
     }
 
@@ -54,6 +65,22 @@ public class FlashcardsQuestion {
         this.answer = answer;
     }
 
+    // public String getQuestionUrl() {
+    //     return this.questionUrl;
+    // }
+
+    // public void setQuestionUrl(String questionUrl) {
+    //     this.questionUrl = questionUrl;
+    // }
+    
+    // public String getAnswerUrl() {
+    //     return this.answerUrl;
+    // }
+
+    // public void setAnswerUrl(String answerUrl) {
+    //     this.answerUrl = answerUrl;
+    // }
+
     public Flashcard getFlashcards() {
         return this.flashcards;
     }
@@ -61,6 +88,5 @@ public class FlashcardsQuestion {
     public void setFlashcards(Flashcard flashcards) {
         this.flashcards = flashcards;
     }
-   
-   
+
 }

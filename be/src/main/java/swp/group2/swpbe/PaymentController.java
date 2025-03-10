@@ -149,7 +149,7 @@ public class PaymentController {
             event = Webhook.constructEvent(payload, header, signSecret);
             if (event.getType().equals(COMPLETED_EVENT)) {
                 @SuppressWarnings("deprecation")
-                Session session = (Session) event.getData().getObject();
+                Session session = (Session) event.getData().getObject();    
                 String transactionId = session.getPaymentIntent();
                 int userId = Integer.parseInt(session.getMetadata().get("userId"));
                 String courseId = session.getMetadata().get("courseId");

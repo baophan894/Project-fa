@@ -21,7 +21,7 @@ public class ProjectConfig {
   @Value("${cloudinary.name}")
   private String cloudinaryApiName;
 
-
+  
   
   @Bean
    Cloudinary getCloudinary() {
